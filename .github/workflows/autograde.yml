@@ -1,0 +1,29 @@
+name: Autograde Lab 1
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r autograder/requirements.txt
+
+      - name: Run auto-grader
+        run: python autograder/grade_lab1.py
+
+      - name: Upload grading results
+        uses: actions/upload-artifact@v4
+        with:
+          name: grading-results
+          path: results.json
